@@ -12,6 +12,7 @@ import (
 
 func main() {
 	config, err := util.LoadConfig(".")
+	
 	if err != nil {
 		log.Fatal("cannot load config:", err)
 	}
