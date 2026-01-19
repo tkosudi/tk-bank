@@ -1,4 +1,4 @@
-module simplebank
+module tkbank
 
 go 1.25
 

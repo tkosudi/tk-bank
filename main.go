@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"log"
-	"simplebank/api"
-	db "simplebank/db/sqlc"
-	"simplebank/util"
+	"tkbank/api"
+	db "tkbank/db/sqlc"
+	"tkbank/util"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )

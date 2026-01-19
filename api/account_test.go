@@ -7,9 +7,9 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
-	mockdb "simplebank/db/mock"
-	db "simplebank/db/sqlc"
-	"simplebank/util"
+	mockdb "tkbank/db/mock"
+	db "tkbank/db/sqlc"
+	"tkbank/util"
 	"testing"
 
 	"github.com/gin-gonic/gin"

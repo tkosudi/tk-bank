@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 	"os"
-	"simplebank/util"
+	"tkbank/util"
 	"testing"
 
 	"github.com/jackc/pgx/v5"

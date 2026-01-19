@@ -5,25 +5,29 @@ name: ci-test
 
 on:
   push:
-    branches: [ "dev", "smain" ]
+    branches: ["dev", "main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-
   test:
     name: Test
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     services:
       postgres:
         image: postgres:16-alpine
         env:
-          POSTGRES_DB: simple_bank
+          POSTGRES_DB: tk_bank
           POSTGRES_USER: root
           POSTGRES_PASSWORD: secret
         ports:
-        - 5432:5432
+          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -31,23 +35,26 @@ jobs:
           --health-retries 5
 
     steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v4
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+          cache: true
 
-    - name: Set up Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: '1.22.4'
+      - name: Install golang-migrate
+        run: |
+          curl -sSfL https://github.com/golang-migrate/migrate/releases/download/v4.18.2/migrate.linux-amd64.tar.gz -o migrate.tar.gz
+          echo "e4174b4df74a2a0773f587974ebc84a74b40ac8e2ce0c00c92a0539c1d1d0328  migrate.tar.gz" | sha256sum -c -
+          tar xzf migrate.tar.gz
+          sudo mv migrate /usr/bin/migrate
+          rm migrate.tar.gz
+          which migrate
 
-    - name: Install golang-migrate
-      run: | 
-        curl -L https://github.com/golang-migrate/migrate/releases/download/v4.18.2/migrate.linux-amd64.tar.gz | tar xz
-        sudo mv migrate /usr/bin/migrate
-        which migrate
+      - name: Run Migration
+        run: make migrateup
 
-    - name: Run Migration
-      run: make migrateup
-
-    - name: Test
-      run: make test
+      - name: Test
+        run: make test

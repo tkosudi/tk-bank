@@ -3,7 +3,7 @@ package api
 import (
 	"errors"
 	"net/http"
-	db "simplebank/db/sqlc"
+	db "tkbank/db/sqlc"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v5"

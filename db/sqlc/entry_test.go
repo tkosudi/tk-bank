@@ -2,7 +2,7 @@ package db
 
 import (
 	"context"
-	"simplebank/util"
+	"tkbank/util"
 	"testing"
 	"time"
 
