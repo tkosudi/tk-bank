@@ -1,5 +1,3 @@
-PATH := $(PATH):/home/tkosudi/.asdf/installs/golang/1.25.3/bin
-
 postgres:
 	docker run --name postgres-16 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:16-alpine
 
