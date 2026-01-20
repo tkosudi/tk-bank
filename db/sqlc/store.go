@@ -71,8 +71,8 @@ func (store *SQLStore) TransferTx(ctx context.Context, arg TransferTxParams) (Tr
 	err := store.execTx(ctx, func(q *Queries) error {
 		var err error
 
-		createTransferParams := CreateTransfersParams(arg)
-		result.Transfer, err = q.CreateTransfers(ctx, createTransferParams)
+		createTransferParams := CreateTransferParams(arg)
+		result.Transfer, err = q.CreateTransfer(ctx, createTransferParams)
 
 		if err != nil {
 			return err
