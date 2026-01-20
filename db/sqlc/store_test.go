@@ -55,7 +55,7 @@ func TestTransferTx(t *testing.T) {
 		require.NotZero(t, transfer.ID)
 		require.NotZero(t, transfer.CreatedAt)
 
-		_, err = store.GetTransfers(context.Background(), transfer.ID)
+		_, err = store.GetTransfer(context.Background(), transfer.ID)
 		require.NoError(t, err)
 
 		// check entries
