@@ -4,25 +4,32 @@ import (
 	"context"
 	"log"
 	"os"
+	"tkbank/util"
 	"testing"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
-)
-
-const (
-	dbSource = "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable"
 )
 
 var testQueries *Queries
 var testDB *pgxpool.Pool
 
 func TestMain(m *testing.M) {
-	var err error
-	
-	testDB, err = pgxpool.New(context.Background(), dbSource)
-
+	config, err := util.LoadConfig("../..")
 	if err != nil {
-		log.Fatal("Cannot connect to db: ", err)
+		log.Fatal("cannot load config:", err)
+	}
+
+	configDB, err := pgxpool.ParseConfig(config.DBSource)
+	if err != nil {
+		log.Fatal("Cannot parse config: ", err)
+	}
+
+	configDB.ConnConfig.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
+
+	testDB, err = pgxpool.NewWithConfig(context.Background(), configDB)
+	if err != nil {
+		log.Fatal("cannot connect to db:", err)
 	}
 
 	testQueries = New(testDB)
